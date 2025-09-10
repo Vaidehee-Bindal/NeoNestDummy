@@ -92,32 +92,6 @@ export function WhyNeoNest() {
           })}
         </div>
 
-        {/* Trust indicators */}
-        <div className="mt-20 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-2xl p-8 border border-primary/10">
-          <div className="text-center mb-8">
-            <h3 className="text-xl font-semibold text-foreground mb-2">Trusted by Families Everywhere</h3>
-            <p className="text-muted-foreground">Join our growing community of satisfied parents and caregivers</p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">1,000+</div>
-              <div className="text-sm text-muted-foreground">Happy Families</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-secondary mb-2">500+</div>
-              <div className="text-sm text-muted-foreground">Certified Caregivers</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-accent mb-2">10,000+</div>
-              <div className="text-sm text-muted-foreground">Care Sessions</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-chart-4 mb-2">98%</div>
-              <div className="text-sm text-muted-foreground">Satisfaction Rate</div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );

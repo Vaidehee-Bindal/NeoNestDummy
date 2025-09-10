@@ -6,7 +6,6 @@ import { Services } from './components/Services';
 import { HowItWorks } from './components/HowItWorks';
 import { WhyNeoNest } from './components/WhyNeoNest';
 import { Plans } from './components/Plans';
-import { Testimonials } from './components/Testimonials';
 import { MissionVision } from './components/MissionVision';
 import { TrainingPortal } from './components/TrainingPortal';
 import { AIFeatures } from './components/AIFeatures';
@@ -74,43 +73,39 @@ function App() {
               <Plans />
             </div>
 
-            {/* Testimonials Section with scroll animation */}
-            <div className="opacity-0 animate-slideInLeft" style={{ animationDelay: '1.0s' }}>
-              <Testimonials />
-            </div>
 
             {/* AI Features Section with scroll animation */}
-            <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '1.2s' }}>
+            <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '1.0s' }}>
               <AIFeatures />
             </div>
 
             {/* Mission & Vision Section with scroll animation */}
-            <div className="opacity-0 animate-slideInRight" style={{ animationDelay: '1.4s' }}>
+            <div className="opacity-0 animate-slideInRight" style={{ animationDelay: '1.2s' }}>
               <MissionVision />
             </div>
 
             {/* Training Portal Section with scroll animation */}
-            <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '1.6s' }}>
+            <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '1.4s' }}>
               <TrainingPortal />
             </div>
 
             {/* Blog Preview Section with scroll animation */}
-            <div className="opacity-0 animate-slideInLeft" style={{ animationDelay: '1.8s' }}>
+            <div className="opacity-0 animate-slideInLeft" style={{ animationDelay: '1.6s' }}>
               <Blog showPreview={true} onNavigate={() => setCurrentView('blog')} />
             </div>
 
             {/* Knowledge Hub Preview Section with scroll animation */}
-            <div className="opacity-0 animate-slideInRight" style={{ animationDelay: '2.0s' }}>
+            <div className="opacity-0 animate-slideInRight" style={{ animationDelay: '1.8s' }}>
               <KnowledgeHub showPreview={true} onNavigate={() => setCurrentView('knowledge')} />
             </div>
 
             {/* FAQ Section with scroll animation */}
-            <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '2.2s' }}>
+            <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '2.0s' }}>
               <FAQ showPreview={true} onNavigate={() => setCurrentView('faq')} />
             </div>
 
             {/* Contact Section with scroll animation */}
-            <div className="opacity-0 animate-slideInLeft" style={{ animationDelay: '2.4s' }}>
+            <div className="opacity-0 animate-slideInLeft" style={{ animationDelay: '2.2s' }}>
               <Contact />
             </div>
           </main>
@@ -140,7 +135,7 @@ function App() {
 
         {/* Footer - only show on home view */}
         {currentView === 'home' && (
-          <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '2.6s' }}>
+          <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '2.4s' }}>
             <Footer onNavigate={setCurrentView} />
           </div>
         )}
