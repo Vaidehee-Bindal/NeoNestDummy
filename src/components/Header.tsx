@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Moon, Sun, Menu, X, Heart, User, BookOpen, MessageCircle, UserPlus, Calendar } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { Button } from './ui/button';
+import { useAuth } from '../contexts/AuthContext';
 
 type AppView = 'home' | 'auth' | 'blog' | 'knowledge' | 'caregiver-signup' | 'book-care' | 'faq' | 'legal';
 
@@ -13,6 +14,15 @@ interface HeaderProps {
 export function Header({ onNavigate, currentView }: HeaderProps) {
   const { theme, setTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  const handleBookCareClick = () => {
+    if (isAuthenticated) {
+      onNavigate('book-care');
+    } else {
+      onNavigate('auth');
+    }
+  };
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -24,12 +34,21 @@ export function Header({ onNavigate, currentView }: HeaderProps) {
   }, []);
 
   const homeNavigation = [
-    { name: 'About', href: '#about' },
     { name: 'Services', href: '#services' },
     { name: 'Plans', href: '#plans' },
     { name: 'Mission', href: '#mission' },
     { name: 'Contact', href: '#contact' },
   ];
+
+  const handleScrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   const appNavigation = [
     { name: 'Home', view: 'home' as AppView, icon: Heart },
@@ -57,13 +76,13 @@ export function Header({ onNavigate, currentView }: HeaderProps) {
             {currentView === 'home' ? (
               // Home page navigation (scroll links)
               homeNavigation.map((item) => (
-                <a
+                <button
                   key={item.name}
-                  href={item.href}
+                  onClick={() => handleScrollToSection(item.href.replace('#', ''))}
                   className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
                 >
                   {item.name}
-                </a>
+                </button>
               ))
             ) : (
               // App navigation (view switching)
@@ -115,7 +134,7 @@ export function Header({ onNavigate, currentView }: HeaderProps) {
             <Button 
               className="hidden md:inline-flex bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground border-0"
               size="sm"
-              onClick={() => onNavigate('book-care')}
+              onClick={handleBookCareClick}
             >
               <Calendar className="w-4 h-4 mr-2" />
               Book Care Now
@@ -153,20 +172,22 @@ export function Header({ onNavigate, currentView }: HeaderProps) {
               // Home page mobile navigation
               <>
                 {homeNavigation.map((item) => (
-                  <a
+                  <button
                     key={item.name}
-                    href={item.href}
-                    className="block text-foreground hover:text-primary transition-colors duration-200 font-medium py-2"
-                    onClick={() => setIsMenuOpen(false)}
+                    onClick={() => {
+                      handleScrollToSection(item.href.replace('#', ''));
+                      setIsMenuOpen(false);
+                    }}
+                    className="block text-foreground hover:text-primary transition-colors duration-200 font-medium py-2 text-left"
                   >
                     {item.name}
-                  </a>
+                  </button>
                 ))}
                 <div className="pt-4 space-y-3 border-t">
                   <Button 
                     className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground border-0"
                     onClick={() => {
-                      onNavigate('book-care');
+                      handleBookCareClick();
                       setIsMenuOpen(false);
                     }}
                   >
@@ -225,7 +246,7 @@ export function Header({ onNavigate, currentView }: HeaderProps) {
                   <Button 
                     className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground border-0"
                     onClick={() => {
-                      onNavigate('book-care');
+                      handleBookCareClick();
                       setIsMenuOpen(false);
                     }}
                   >

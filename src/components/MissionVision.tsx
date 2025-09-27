@@ -10,7 +10,6 @@ export function MissionVision() {
   const { elementRef: heroRef } = useScrollAnimation();
   const { containerRef: whyNeoNestRef } = useStaggeredAnimation(3, 200);
   const { containerRef: founderRef } = useStaggeredAnimation(1, 300);
-  const { containerRef: teamRef } = useStaggeredAnimation(4, 150);
 
   const reasons = [
     {
@@ -37,56 +36,25 @@ export function MissionVision() {
   ];
 
   const founder = {
-    name: "Dr. Ananya Sharma",
+    name: "Vaidehee Bindal",
     title: "Founder & CEO",
-    image: "indian woman doctor entrepreneur",
-    bio: "A pediatrician and mother of two, Dr. Ananya experienced firsthand the challenges of finding quality postpartum care. After struggling to balance her medical practice with motherhood while searching for reliable support, she was inspired to create NeoNest - a platform that would solve this problem for millions of mothers while creating meaningful employment for women in her community.",
-    experience: "15+ years in Pediatrics",
-    education: "MBBS, MD Pediatrics, IIM Bangalore MBA",
+    bio: "A passionate B.Tech student driven by a personal mission to support mothers and newborns. The idea for the platform was inspired by observing her aunt's struggles with postpartum care and newborn support, and noticing the challenges faced by today's working mothers in nuclear families. Determined to make neonatal and postnatal support more accessible and practical, she envisioned a solution that blends traditional care practices with modern technology. Beyond supporting mothers, she is also committed to empowering local women by providing training, certification, and meaningful employment opportunities in the care ecosystem.",
+    experience: "B.Tech Student",
+    education: "B.Tech in Computer Science",
     achievements: [
-      "2024 Healthcare Innovator Award",
-      "Featured in Forbes 30 Under 30 Healthcare",
-      "TEDx Speaker on Maternal Health",
-      "Published researcher in child development"
+      "Personal experience with family postpartum challenges",
+      "Visionary approach to traditional care + technology",
+      "Committed to women's empowerment and employment",
+      "Passionate about accessible maternal care"
     ],
     vision: "To revolutionize maternal care by creating a trusted ecosystem where every mother receives expert support and every woman caregiver achieves economic independence through meaningful work.",
     social: {
       linkedin: "#",
       twitter: "#",
-      email: "ananya@neonest.com"
+      email: "vaidehee@neonest.com"
     }
   };
 
-  const team = [
-    {
-      name: "Priya Mehta",
-      title: "CTO & Co-founder",
-      image: "female tech leader indian",
-      bio: "Former Google engineer with 12+ years in AI/ML. Leading our technology platform and AI-powered matching algorithms.",
-      goals: ["Scale platform to 100+ cities", "Develop advanced AI care recommendations", "Build world-class caregiver training programs"]
-    },
-    {
-      name: "Rajesh Kumar",
-      title: "Head of Operations",
-      image: "indian business operations manager",
-      bio: "15+ years in healthcare operations. Ensuring seamless service delivery and caregiver quality across all markets.",
-      goals: ["Maintain 99.5% service reliability", "Expand caregiver network to 10,000+", "Implement comprehensive quality assurance"]
-    },
-    {
-      name: "Dr. Meera Iyer",
-      title: "Head of Medical Advisory",
-      image: "indian female doctor advisor",
-      bio: "Obstetrician with 20+ years experience. Developing medical protocols and caregiver training curricula.",
-      goals: ["Create evidence-based care protocols", "Train 1,000+ certified caregivers", "Establish medical partnerships"]
-    },
-    {
-      name: "Kavitha Rao",
-      title: "Head of Community",
-      image: "indian woman community leader",
-      bio: "Social work background with expertise in women's empowerment and community building programs.",
-      goals: ["Support 5,000+ women caregivers", "Build strong community networks", "Create sustainable livelihood programs"]
-    }
-  ];
 
   return (
     <section id="mission" className="py-20 bg-background">
@@ -161,21 +129,9 @@ export function MissionVision() {
             </p>
           </div>
           
-          <div ref={founderRef} className="max-w-5xl mx-auto">
+          <div ref={founderRef} className="max-w-4xl mx-auto">
             <Card className="opacity-0 overflow-hidden shadow-2xl border-0">
-              <div className="lg:flex">
-                <div className="lg:w-1/3">
-                  <div className="aspect-square bg-gradient-to-br from-primary/20 to-secondary/20 relative overflow-hidden">
-                    <ImageWithFallback
-                      src={`https://source.unsplash.com/400x400/?${encodeURIComponent(founder.image)}`}
-                      alt={founder.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-                
-                <div className="lg:w-2/3">
-                  <CardContent className="p-8">
+              <CardContent className="p-8">
                     <div className="flex items-start justify-between mb-6">
                       <div>
                         <h4 className="text-2xl font-bold text-foreground mb-2">{founder.name}</h4>
@@ -216,55 +172,15 @@ export function MissionVision() {
                       </div>
                     </div>
                     
-                    <div className="border-t pt-6">
-                      <h5 className="font-semibold text-foreground mb-3">Vision Statement</h5>
-                      <p className="text-muted-foreground italic leading-relaxed">"{founder.vision}"</p>
-                    </div>
-                  </CardContent>
+                <div className="border-t pt-6">
+                  <h5 className="font-semibold text-foreground mb-3">Vision Statement</h5>
+                  <p className="text-muted-foreground italic leading-relaxed">"{founder.vision}"</p>
                 </div>
-              </div>
+              </CardContent>
             </Card>
           </div>
         </div>
 
-        {/* Team Section */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-foreground mb-4">Our Leadership Team</h3>
-            <p className="text-lg text-muted-foreground">
-              Experienced leaders united by a shared commitment to maternal care and women's empowerment
-            </p>
-          </div>
-          
-          <div ref={teamRef} className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {team.map((member, index) => (
-              <Card key={index} className="opacity-0 group hover:shadow-xl transition-all duration-500 text-center">
-                <CardContent className="p-6">
-                  <Avatar className="w-24 h-24 mx-auto mb-4">
-                    <AvatarImage src={`https://source.unsplash.com/200x200/?${encodeURIComponent(member.image)}`} />
-                    <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                  </Avatar>
-                  
-                  <h4 className="font-bold text-foreground mb-1">{member.name}</h4>
-                  <p className="text-sm text-primary font-medium mb-3">{member.title}</p>
-                  <p className="text-sm text-muted-foreground leading-relaxed mb-4">{member.bio}</p>
-                  
-                  <div>
-                    <h5 className="text-xs font-semibold text-foreground mb-2 uppercase tracking-wide">Goals</h5>
-                    <div className="space-y-1">
-                      {member.goals.map((goal, goalIndex) => (
-                        <div key={goalIndex} className="text-xs text-muted-foreground flex items-center">
-                          <div className="w-1 h-1 bg-primary rounded-full mr-2 flex-shrink-0"></div>
-                          {goal}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Mission Panel */}

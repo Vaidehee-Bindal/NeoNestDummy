@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowRight, Calendar, MapPin, Heart, Clock, Star, User, Baby, Shield, Search, Filter } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -10,17 +10,81 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Badge } from './ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { RadioGroup, RadioGroupItem } from './ui/radio-group';
-import { useScrollAnimation, useStaggeredAnimation } from './hooks/useScrollAnimation';
+import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { PaymentForm } from './PaymentForm';
 
 export function BookCareWorkflow() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedCaregiver, setSelectedCaregiver] = useState('');
+  const [showValidationErrors, setShowValidationErrors] = useState(false);
+  const [paymentCompleted, setPaymentCompleted] = useState(false);
+  const [paymentData, setPaymentData] = useState<any>(null);
+  const [paymentError, setPaymentError] = useState<string>('');
   
   const { elementRef: heroRef } = useScrollAnimation();
-  const { containerRef: caregiversRef } = useStaggeredAnimation(6, 150);
+
+  // Scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, [currentStep]);
+
+  // Validation functions
+  const validateStep1 = () => {
+    return selectedCity && selectedServices.length > 0;
+  };
+
+  const validateStep2 = () => {
+    return selectedCaregiver !== '';
+  };
+
+  const canProceedToNextStep = () => {
+    switch (currentStep) {
+      case 1:
+        return validateStep1();
+      case 2:
+        return validateStep2();
+      case 3:
+        return true; // Step 3 doesn't have required fields for now
+      case 4:
+        return true; // Payment step - can proceed after payment
+      default:
+        return true;
+    }
+  };
+
+  const handleNextStep = () => {
+    if (canProceedToNextStep()) {
+      setCurrentStep(Math.min(steps.length, currentStep + 1));
+      setShowValidationErrors(false);
+    } else {
+      setShowValidationErrors(true);
+    }
+  };
+
+  const handleCardClick = (caregiverId: string) => {
+    // Only allow card selection if we're on step 2 and step 1 is completed
+    if (currentStep === 2 && validateStep1()) {
+      setSelectedCaregiver(caregiverId);
+    }
+  };
+
+  const handlePaymentSuccess = (data: any) => {
+    setPaymentData(data);
+    setPaymentCompleted(true);
+    setPaymentError('');
+    // Go to confirmation step
+    setTimeout(() => {
+      setCurrentStep(5);
+    }, 1000);
+  };
+
+  const handlePaymentError = (error: string) => {
+    setPaymentError(error);
+    setPaymentCompleted(false);
+  };
 
   const cities = [
     { id: 'mumbai', name: 'Mumbai', caregivers: 156, avgRate: '₹300-500/hour' },
@@ -179,7 +243,8 @@ export function BookCareWorkflow() {
     { id: 1, title: 'Care Details', icon: Baby },
     { id: 2, title: 'Select Caregiver', icon: User },
     { id: 3, title: 'Schedule & Book', icon: Calendar },
-    { id: 4, title: 'Confirmation', icon: Shield }
+    { id: 4, title: 'Payment', icon: Shield },
+    { id: 5, title: 'Confirmation', icon: Shield }
   ];
 
   const renderStepContent = () => {
@@ -342,15 +407,34 @@ export function BookCareWorkflow() {
               </Button>
             </div>
 
+            {/* Step 1 Completion Check */}
+            {!validateStep1() && (
+              <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <div className="flex items-center gap-2 text-yellow-700">
+                  <div className="w-4 h-4 rounded-full bg-yellow-100 flex items-center justify-center">
+                    <span className="text-xs font-bold">!</span>
+                  </div>
+                  <span className="font-medium">Please complete Step 1 first</span>
+                </div>
+                <p className="mt-1 text-sm text-yellow-600">
+                  You need to select your city and services before choosing a caregiver.
+                </p>
+              </div>
+            )}
+
             {/* Caregivers Grid */}
-            <div ref={caregiversRef} className="space-y-4">
-              {caregivers.map((caregiver) => (
+            <div className="space-y-4">
+              {caregivers.map((caregiver, index) => (
                 <Card 
                   key={caregiver.id} 
-                  className={`opacity-0 cursor-pointer transition-all duration-200 hover:shadow-lg ${
+                  className={`transition-all duration-200 animate-fadeInUp ${
+                    validateStep1() 
+                      ? 'cursor-pointer hover:shadow-lg' 
+                      : 'cursor-not-allowed opacity-50'
+                  } ${
                     selectedCaregiver === caregiver.id ? 'ring-2 ring-primary bg-primary/5' : ''
                   }`}
-                  onClick={() => setSelectedCaregiver(caregiver.id)}
+                  onClick={() => handleCardClick(caregiver.id)}
                 >
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
@@ -572,6 +656,67 @@ export function BookCareWorkflow() {
         return (
           <div className="space-y-6">
             <div className="text-center mb-8">
+              <h2 className="text-2xl font-bold mb-4">Complete Payment</h2>
+              <p className="text-muted-foreground">Secure payment to confirm your booking</p>
+            </div>
+
+            {/* Payment Summary */}
+            <Card className="bg-primary/5 border-primary/20">
+              <CardContent className="p-6">
+                <h3 className="font-semibold mb-4">Payment Summary</h3>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span>Service Fee (4 hours)</span>
+                    <span>₹1,400</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>Platform Fee</span>
+                    <span>₹100</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>GST (18%)</span>
+                    <span>₹40</span>
+                  </div>
+                  <div className="border-t pt-3">
+                    <div className="flex items-center justify-between font-semibold text-lg">
+                      <span>Total Amount</span>
+                      <span className="text-primary">₹1,540</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Payment Error */}
+            {paymentError && (
+              <Card className="bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-800">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 text-red-700 dark:text-red-300">
+                    <div className="w-4 h-4 rounded-full bg-red-100 flex items-center justify-center">
+                      <span className="text-xs font-bold">!</span>
+                    </div>
+                    <span className="font-medium">Payment Error</span>
+                  </div>
+                  <p className="text-sm text-red-600 dark:text-red-400 mt-1">
+                    {paymentError}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Payment Form */}
+            <PaymentForm
+              amount={1540}
+              onPaymentSuccess={handlePaymentSuccess}
+              onPaymentError={handlePaymentError}
+            />
+          </div>
+        );
+
+      case 5:
+        return (
+          <div className="space-y-6">
+            <div className="text-center mb-8">
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
@@ -605,6 +750,22 @@ export function BookCareWorkflow() {
                   <span>Total Amount</span>
                   <span className="font-semibold text-primary">₹1,540</span>
                 </div>
+                {paymentData && (
+                  <>
+                    <div className="flex items-center justify-between">
+                      <span>Payment Method</span>
+                      <span className="capitalize">{paymentData.method}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Transaction ID</span>
+                      <span className="font-mono text-sm">{paymentData.transactionId}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Payment Status</span>
+                      <span className="text-green-600 font-medium">✓ Completed</span>
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
 
@@ -659,9 +820,13 @@ export function BookCareWorkflow() {
             </Card>
 
             <div className="text-center space-y-4">
-              <Button className="bg-gradient-to-r from-primary to-secondary">
-                Download NeoNest App
-              </Button>
+              <div className="space-y-2">
+                <div className="text-sm text-muted-foreground">Payment Status</div>
+                <div className="flex items-center justify-center gap-2 text-green-600">
+                  <Shield className="w-4 h-4" />
+                  <span className="font-medium">Payment Completed Successfully</span>
+                </div>
+              </div>
               <div>
                 <Button variant="outline" asChild>
                   <a href="/">Return to Home</a>
@@ -678,22 +843,6 @@ export function BookCareWorkflow() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b border-border/50 bg-white/80 backdrop-blur-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-bold text-xl">NeoNest</span>
-            </div>
-            <Button variant="ghost" asChild>
-              <a href="/">← Back to Home</a>
-            </Button>
-          </div>
-        </div>
-      </div>
 
       {/* Hero Section - Only show on first step */}
       {currentStep === 1 && (
@@ -729,9 +878,9 @@ export function BookCareWorkflow() {
       )}
 
       {/* Step Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className={`max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ${currentStep === 1 ? 'pt-16' : 'pt-24'}`}>
         {/* Step Navigation */}
-        <div className="flex items-center justify-center mb-8">
+        <div className="flex items-center justify-center mb-8 mt-4">
           {steps.map((step, index) => {
             const IconComponent = step.icon;
             const isActive = currentStep === step.id;
@@ -768,8 +917,25 @@ export function BookCareWorkflow() {
           <CardContent className="p-8">
             {renderStepContent()}
             
+            {/* Validation Error Messages */}
+            {showValidationErrors && (
+              <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <div className="flex items-center gap-2 text-red-600">
+                  <div className="w-4 h-4 rounded-full bg-red-100 flex items-center justify-center">
+                    <span className="text-xs font-bold">!</span>
+                  </div>
+                  <span className="font-medium">Please complete the required fields:</span>
+                </div>
+                <ul className="mt-2 ml-6 text-sm text-red-600">
+                  {currentStep === 1 && !selectedCity && <li>• Please select your city</li>}
+                  {currentStep === 1 && selectedServices.length === 0 && <li>• Please select at least one service</li>}
+                  {currentStep === 2 && !selectedCaregiver && <li>• Please select a caregiver</li>}
+                </ul>
+              </div>
+            )}
+            
             {/* Navigation Buttons */}
-            {currentStep < 4 && (
+            {currentStep < 5 && (
               <div className="flex justify-between mt-8 pt-6 border-t border-border">
                 <Button 
                   variant="outline" 
@@ -780,10 +946,10 @@ export function BookCareWorkflow() {
                 </Button>
                 
                 <Button 
-                  onClick={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
-                  disabled={currentStep === 2 && !selectedCaregiver}
+                  onClick={handleNextStep}
+                  disabled={!canProceedToNextStep()}
                 >
-                  {currentStep === 3 ? 'Confirm Booking' : 'Continue'}
+                  {currentStep === 3 ? 'Proceed to Payment' : currentStep === 4 ? 'Complete Payment' : 'Continue'}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>

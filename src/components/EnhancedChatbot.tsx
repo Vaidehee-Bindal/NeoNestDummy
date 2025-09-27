@@ -84,7 +84,7 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
 
     const caretakerWelcome: Message = {
       id: 'caretaker-welcome',
-      text: "Hello dear, I'm Maya, your virtual caretaker. I'm here to listen, support, and help you through any challenges you're facing as a mother. This is a safe space to share your feelings, concerns, or just chat. How are you feeling today?",
+      text: "Hello dear, I'm Nora, your virtual caretaker. I'm here to listen, support, and help you through any challenges you're facing as a mother. This is a safe space to share your feelings, concerns, or just chat. How are you feeling today?",
       sender: 'ai',
       timestamp: new Date(),
       suggestions: [
@@ -264,7 +264,7 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
       color: "blue"
     },
     caretaker: {
-      name: "Maya", 
+      name: "Nora", 
       role: "Virtual Caretaker",
       avatar: "caring nurse woman",
       color: "pink"
@@ -273,7 +273,7 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-end p-4">
-      <Card className="w-full max-w-md h-[600px] shadow-2xl border-2 border-primary/20 bg-white/95 backdrop-blur-sm">
+      <Card className="w-full max-w-md h-[450px] shadow-2xl border border-white/20 bg-white/10 dark:bg-black/10 backdrop-blur-md">
         <CardHeader className="pb-3 border-b border-border/50">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -282,8 +282,8 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
                 <AvatarFallback>{botInfo[activeBot].name[0]}</AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle className="text-sm">{botInfo[activeBot].name}</CardTitle>
-                <p className="text-xs text-muted-foreground">{botInfo[activeBot].role}</p>
+                <CardTitle className="text-sm text-gray-900 dark:text-white font-semibold">{botInfo[activeBot].name}</CardTitle>
+                <p className="text-xs text-gray-700 dark:text-gray-200">{botInfo[activeBot].role}</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -296,10 +296,11 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
                 <RotateCcw className="w-4 h-4" />
               </Button>
               <Button
-                variant="ghost"
+                variant="destructive"
                 size="sm"
                 onClick={onClose}
-                className="h-8 w-8 p-0"
+                className="h-8 w-8 p-0 hover:bg-destructive/90"
+                title="Close chat"
               >
                 <X className="w-4 h-4" />
               </Button>
@@ -321,22 +322,20 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
           </Tabs>
         </CardHeader>
 
-        <CardContent className="flex flex-col h-[480px] p-0">
+        <CardContent className="flex flex-col h-[330px] p-0">
           {/* Messages Area */}
-          <ScrollArea className="flex-1 p-4">
+          <ScrollArea className="flex-1 p-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent">
             <div className="space-y-4">
               {currentMessages.map((message) => (
                 <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] ${
                     message.sender === 'user' 
-                      ? 'bg-primary text-primary-foreground' 
-                      : activeBot === 'caretaker'
-                      ? 'bg-pink-50 dark:bg-pink-950/20 text-pink-900 dark:text-pink-100 border border-pink-200 dark:border-pink-800'
-                      : 'bg-muted text-muted-foreground'
+                      ? 'bg-primary/90 backdrop-blur-sm text-white shadow-lg' 
+                      : 'bg-white/30 dark:bg-white/20 text-gray-900 dark:text-white backdrop-blur-sm border border-white/30 shadow-lg'
                   } rounded-lg p-3`}>
                     <p className="text-sm leading-relaxed">{message.text}</p>
                     <div className="flex items-center justify-between mt-2">
-                      <span className="text-xs opacity-70">
+                      <span className="text-xs opacity-80 text-gray-700 dark:text-gray-200">
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </span>
                       {message.sender === 'ai' && activeBot === 'caretaker' && (
@@ -360,7 +359,7 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
               {/* Quick Reply Suggestions */}
               {currentMessages.length > 0 && currentMessages[currentMessages.length - 1].sender === 'ai' && currentMessages[currentMessages.length - 1].suggestions && (
                 <div className="space-y-2">
-                  <p className="text-xs text-muted-foreground">Quick replies:</p>
+                  <p className="text-xs text-gray-800 dark:text-gray-200 font-medium">Quick replies:</p>
                   <div className="flex flex-wrap gap-2">
                     {currentMessages[currentMessages.length - 1].suggestions!.map((suggestion, index) => (
                       <Button
@@ -380,11 +379,11 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
               {/* Typing Indicator */}
               {isTyping && (
                 <div className="flex justify-start">
-                  <div className="bg-muted rounded-lg p-3 max-w-[80%]">
+                  <div className="bg-white/30 dark:bg-white/20 backdrop-blur-sm border border-white/30 rounded-lg p-3 max-w-[80%] shadow-lg">
                     <div className="flex items-center gap-1">
-                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                      <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                      <div className="w-2 h-2 bg-gray-700 dark:bg-gray-200 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                      <div className="w-2 h-2 bg-gray-700 dark:bg-gray-200 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                      <div className="w-2 h-2 bg-gray-700 dark:bg-gray-200 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                     </div>
                   </div>
                 </div>
@@ -394,7 +393,7 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
           </ScrollArea>
 
           {/* Input Area */}
-          <div className="border-t border-border/50 p-4">
+          <div className="border-t border-white/20 p-4 bg-white/5 dark:bg-black/5 backdrop-blur-sm">
             <div className="flex items-center gap-2">
               <div className="flex-1 relative">
                 <Input
@@ -402,14 +401,14 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder={activeBot === 'caretaker' ? "Share what's on your mind..." : "Ask me anything..."}
                   onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                  className="pr-12"
+                  className="pr-12 text-gray-900 dark:text-white placeholder:text-gray-600 dark:placeholder:text-gray-300 bg-white/40 dark:bg-white/20 backdrop-blur-sm border-white/50 dark:border-white/30 shadow-lg"
                 />
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={isListening ? stopListening : startListening}
                   className={`absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 ${
-                    isListening ? 'text-red-500' : 'text-muted-foreground'
+                    isListening ? 'text-red-500' : 'text-gray-700 dark:text-gray-200'
                   }`}
                 >
                   {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
@@ -428,7 +427,7 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
             {/* Voice Input Status */}
             {isListening && (
               <div className="mt-2 text-center">
-                <Badge variant="outline" className="text-xs animate-pulse">
+                <Badge variant="outline" className="text-xs animate-pulse text-gray-800 dark:text-gray-100 bg-white/40 dark:bg-white/20 backdrop-blur-sm border-white/50 shadow-lg">
                   <Headphones className="w-3 h-3 mr-1" />
                   Listening...
                 </Badge>
@@ -438,14 +437,14 @@ export function EnhancedChatbot({ isOpen, onClose }: ChatBotProps) {
             {/* Speaking Status */}
             {isSpeaking && activeBot === 'caretaker' && (
               <div className="mt-2 text-center">
-                <Badge variant="outline" className="text-xs">
+                <Badge variant="outline" className="text-xs text-gray-800 dark:text-gray-100 bg-white/40 dark:bg-white/20 backdrop-blur-sm border-white/50 shadow-lg">
                   <Volume2 className="w-3 h-3 mr-1" />
                   Speaking...
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={stopSpeaking}
-                    className="ml-2 h-4 w-4 p-0"
+                    className="ml-2 h-4 w-4 p-0 text-gray-700 dark:text-gray-200"
                   >
                     <X className="w-3 h-3" />
                   </Button>

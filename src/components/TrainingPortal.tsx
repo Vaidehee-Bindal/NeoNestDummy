@@ -60,7 +60,13 @@ const certifications = [
   },
 ];
 
-export function TrainingPortal() {
+type AppView = 'home' | 'auth' | 'blog' | 'knowledge' | 'caregiver-signup' | 'book-care' | 'faq' | 'legal';
+
+interface TrainingPortalProps {
+  onNavigate?: (view: AppView) => void;
+}
+
+export function TrainingPortal({ onNavigate }: TrainingPortalProps) {
   return (
     <section className="py-20 bg-gradient-to-b from-accent/10 to-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -237,6 +243,7 @@ export function TrainingPortal() {
               <Button 
                 size="lg" 
                 className="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground py-6 rounded-xl font-medium"
+                onClick={() => onNavigate?.('caregiver-signup')}
               >
                 <TrendingUp className="w-5 h-5 mr-2" />
                 Become a Caregiver

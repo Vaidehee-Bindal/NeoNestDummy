@@ -98,9 +98,17 @@ export function CookieConsent() {
                 <p className="text-sm text-muted-foreground mb-4 leading-relaxed">
                   We use cookies to enhance your experience, analyze site usage, and personalize content. 
                   By continuing to use NeoNest, you agree to our use of cookies. 
-                  <a href="#privacy" className="text-primary hover:underline ml-1">
+                  <button 
+                    onClick={() => {
+                      const element = document.getElementById('privacy');
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }
+                    }}
+                    className="text-primary hover:underline ml-1"
+                  >
                     Learn more in our Privacy Policy.
-                  </a>
+                  </button>
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-3">

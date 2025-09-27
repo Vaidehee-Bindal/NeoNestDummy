@@ -2,10 +2,26 @@ import { ArrowRight, PlayCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
+import { useAuth } from '../contexts/AuthContext';
 
-export function Hero() {
+type AppView = 'home' | 'auth' | 'blog' | 'knowledge' | 'caregiver-signup' | 'book-care' | 'faq' | 'legal';
+
+interface HeroProps {
+  onNavigate: (view: AppView) => void;
+}
+
+export function Hero({ onNavigate }: HeroProps) {
   const { elementRef: contentRef } = useScrollAnimation({ animationClass: 'animate-slideInLeft' });
   const { elementRef: imageRef } = useScrollAnimation({ animationClass: 'animate-slideInRight', delay: 300 });
+  const { isAuthenticated } = useAuth();
+
+  const handleBookCareClick = () => {
+    if (isAuthenticated) {
+      onNavigate('book-care');
+    } else {
+      onNavigate('auth');
+    }
+  };
 
   return (
     <section className="pt-24 pb-12 lg:pt-32 lg:pb-20 bg-gradient-to-b from-background to-accent/20">
@@ -43,6 +59,7 @@ export function Hero() {
               <Button 
                 size="lg" 
                 className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-primary-foreground border-0 px-8 py-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+                onClick={handleBookCareClick}
               >
                 Book Care Now
                 <ArrowRight className="ml-2 h-5 w-5" />
@@ -52,6 +69,7 @@ export function Hero() {
                 variant="outline" 
                 size="lg" 
                 className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-6 rounded-xl transition-all duration-300"
+                onClick={() => onNavigate('caregiver-signup')}
               >
                 <PlayCircle className="mr-2 h-5 w-5" />
                 Join as Caregiver

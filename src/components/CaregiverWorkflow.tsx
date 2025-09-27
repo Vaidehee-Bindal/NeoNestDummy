@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowRight, CheckCircle, Upload, Calendar, MapPin, Heart, Shield, Star, Clock, User, Phone, Mail, FileText, Award, GraduationCap, Users, BookOpen, PlayCircle, Target } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -21,6 +21,11 @@ export function CaregiverWorkflow() {
   
   const { elementRef: heroRef } = useScrollAnimation();
   const { elementRef: benefitsRef } = useScrollAnimation();
+
+  // Scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, [currentStep]);
 
   const regularSteps = [
     { id: 0, title: 'Experience Assessment', icon: BookOpen },
@@ -1206,34 +1211,6 @@ export function CaregiverWorkflow() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <div className="border-b border-border/50 bg-white/80 backdrop-blur-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-bold text-xl">NeoNest</span>
-            </div>
-            <Button variant="ghost" asChild>
-              <a href="/">← Back to Home</a>
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Progress Bar */}
-      <div className="bg-muted/30 border-b border-border/50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">Step {currentStep + 1} of {steps.length}</span>
-            <span className="text-sm text-muted-foreground">{Math.round(progressPercentage)}% Complete</span>
-          </div>
-          <Progress value={progressPercentage} className="h-2" />
-        </div>
-      </div>
-
       {/* Hero Section - Only show on first step */}
       {currentStep === 0 && (
         <section ref={heroRef} className="py-16 bg-gradient-to-br from-primary/10 via-secondary/10 to-accent/10">

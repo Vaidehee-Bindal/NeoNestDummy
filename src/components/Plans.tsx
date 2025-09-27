@@ -458,10 +458,7 @@ export function Plans() {
             {cities.map((city) => (
               <Card 
                 key={city.id} 
-                className={`opacity-0 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                  selectedCity === city.id ? 'ring-2 ring-primary bg-primary/5' : ''
-                }`}
-                onClick={() => setSelectedCity(city.id)}
+                className="opacity-0 transition-all duration-300 hover:shadow-lg hover:scale-105"
               >
                 <CardContent className="p-4 text-center">
                   <h4 className="font-semibold mb-1">{city.name}</h4>
@@ -492,10 +489,24 @@ export function Plans() {
             <Button 
               variant="outline" 
               className="border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-8 py-3 rounded-xl"
+              onClick={() => {
+                const element = document.getElementById('contact');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
             >
               Get Custom Quote
             </Button>
-            <Button className="bg-gradient-to-r from-primary to-secondary px-8 py-3 rounded-xl">
+            <Button 
+              className="bg-gradient-to-r from-primary to-secondary px-8 py-3 rounded-xl"
+              onClick={() => {
+                const element = document.getElementById('contact');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+            >
               Book Consultation
             </Button>
           </div>

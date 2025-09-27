@@ -1,4 +1,11 @@
 import { UserPlus, Calendar, Users } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+
+type AppView = 'home' | 'auth' | 'blog' | 'knowledge' | 'caregiver-signup' | 'book-care' | 'faq' | 'legal';
+
+interface HowItWorksProps {
+  onNavigate?: (view: AppView) => void;
+}
 
 const steps = [
   {
@@ -24,7 +31,17 @@ const steps = [
   },
 ];
 
-export function HowItWorks() {
+export function HowItWorks({ onNavigate }: HowItWorksProps) {
+  const { isAuthenticated } = useAuth();
+
+  const handleBookCareClick = () => {
+    if (isAuthenticated) {
+      onNavigate?.('book-care');
+    } else {
+      onNavigate?.('auth');
+    }
+  };
+
   return (
     <section className="py-20 bg-gradient-to-b from-accent/10 to-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -95,7 +112,10 @@ export function HowItWorks() {
           <p className="text-muted-foreground mb-4">
             Join thousands of families who trust NeoNest for their care needs.
           </p>
-          <button className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-xl font-medium hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg">
+          <button 
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-primary to-secondary text-primary-foreground rounded-xl font-medium hover:from-primary/90 hover:to-secondary/90 transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+            onClick={handleBookCareClick}
+          >
             Start Your Journey
           </button>
         </div>

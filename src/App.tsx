@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ThemeProvider } from './components/ThemeProvider';
+import { AuthProvider } from './contexts/AuthContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { Services } from './components/Services';
@@ -20,6 +21,7 @@ import { Blog } from './components/Blog';
 import { KnowledgeHub } from './components/KnowledgeHub';
 import { CaregiverWorkflow } from './components/CaregiverWorkflow';
 import { BookCareWorkflow } from './components/BookCareWorkflow';
+import { AuthGuard } from './components/AuthGuard';
 import { FAQ } from './components/FAQ';
 import { LegalPolicies } from './components/LegalPolicies';
 
@@ -28,10 +30,75 @@ type AppView = 'home' | 'auth' | 'blog' | 'knowledge' | 'caregiver-signup' | 'bo
 function App() {
   const [currentView, setCurrentView] = useState<AppView>('home');
 
+  // Scroll to top when view changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+  }, [currentView]);
+
+  // Prevent hash fragments from appearing in URL
+  useEffect(() => {
+    // Clear any existing hash immediately
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+
+    const handleHashChange = () => {
+      // Remove hash from URL without triggering scroll
+      if (window.location.hash) {
+        const hash = window.location.hash;
+        window.history.replaceState(null, '', window.location.pathname);
+        
+        // Scroll to the element if it exists
+        const element = document.getElementById(hash.replace('#', ''));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    };
+
+    // Handle clicks on anchor links
+    const handleAnchorClick = (e: Event) => {
+      const target = e.target as HTMLElement;
+      const link = target.closest('a[href^="#"]');
+      
+      if (link) {
+        e.preventDefault();
+        const href = link.getAttribute('href');
+        if (href) {
+          const element = document.getElementById(href.replace('#', ''));
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }
+    };
+
+    // Handle initial hash if present
+    handleHashChange();
+
+    // Listen for hash changes and anchor clicks
+    window.addEventListener('hashchange', handleHashChange);
+    document.addEventListener('click', handleAnchorClick);
+
+    // Also listen for popstate to handle browser back/forward
+    const handlePopState = () => {
+      if (window.location.hash) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      document.removeEventListener('click', handleAnchorClick);
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
   const renderCurrentView = () => {
     switch (currentView) {
       case 'auth':
-        return <Auth />;
+        return <Auth onNavigate={setCurrentView} />;
       case 'blog':
         return <Blog />;
       case 'knowledge':
@@ -39,7 +106,11 @@ function App() {
       case 'caregiver-signup':
         return <CaregiverWorkflow />;
       case 'book-care':
-        return <BookCareWorkflow />;
+        return (
+          <AuthGuard onNavigate={setCurrentView}>
+            <BookCareWorkflow />
+          </AuthGuard>
+        );
       case 'faq':
         return <FAQ />;
       case 'legal':
@@ -50,7 +121,7 @@ function App() {
           <main id="main-content" className="relative">
             {/* Hero Section with scroll animation */}
             <div className="opacity-0 animate-fadeInUp">
-              <Hero />
+              <Hero onNavigate={setCurrentView} />
             </div>
 
             {/* Services Section with scroll animation */}
@@ -60,7 +131,7 @@ function App() {
 
             {/* How It Works Section with scroll animation */}
             <div className="opacity-0 animate-slideInLeft" style={{ animationDelay: '0.4s' }}>
-              <HowItWorks />
+              <HowItWorks onNavigate={setCurrentView} />
             </div>
 
             {/* Why NeoNest Section with scroll animation */}
@@ -86,7 +157,7 @@ function App() {
 
             {/* Training Portal Section with scroll animation */}
             <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '1.4s' }}>
-              <TrainingPortal />
+              <TrainingPortal onNavigate={setCurrentView} />
             </div>
 
             {/* Blog Preview Section with scroll animation */}
@@ -114,8 +185,9 @@ function App() {
   };
 
   return (
-    <ThemeProvider defaultTheme="light" storageKey="neonest-ui-theme">
-      <div className="min-h-screen bg-background text-foreground antialiased">
+    <AuthProvider>
+      <ThemeProvider defaultTheme="light" storageKey="neonest-ui-theme">
+        <div className="min-h-screen bg-background text-foreground antialiased">
         {/* Skip to content link for accessibility */}
         <a
           href="#main-content"
@@ -143,8 +215,9 @@ function App() {
         {/* Floating Components */}
         <FloatingChatbot />
         <CookieConsent />
-      </div>
-    </ThemeProvider>
+        </div>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 

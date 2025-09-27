@@ -8,9 +8,9 @@
   --card-foreground: #2D3748;
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: #A6DCEF;
+  --primary: #4A90A4;
   --primary-foreground: #2D3748;
-  --secondary: #F6C6C7;
+  --secondary: #C47A7A;
   --secondary-foreground: #2D3748;
   --muted: #F7FAFC;
   --muted-foreground: #718096;
@@ -24,25 +24,25 @@
   --switch-background: #CBD5E0;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: #A6DCEF;
-  --chart-1: #A6DCEF;
-  --chart-2: #F6C6C7;
+  --ring: #4A90A4;
+  --chart-1: #4A90A4;
+  --chart-2: #C47A7A;
   --chart-3: #C8E6C9;
   --chart-4: #D1C4E9;
   --chart-5: #FED7E2;
   --radius: 1rem;
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #A6DCEF;
+  --sidebar-primary: #4A90A4;
   --sidebar-primary-foreground: #2D3748;
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: #A6DCEF;
+  --sidebar-ring: #4A90A4;
   
   /* NeoNest Custom Colors */
-  --baby-blue: #A6DCEF;
-  --peach: #F6C6C7;
+  --baby-blue: #4A90A4;
+  --peach: #C47A7A;
   --mint: #C8E6C9;
   --lavender: #D1C4E9;
   --cream: #FFF8F5;

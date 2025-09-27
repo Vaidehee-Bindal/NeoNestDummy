@@ -1,6 +1,7 @@
 import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
+import { useAuth } from '../contexts/AuthContext';
 
 type AppView = 'home' | 'auth' | 'blog' | 'knowledge' | 'caregiver-signup' | 'book-care' | 'faq' | 'legal';
 
@@ -10,35 +11,54 @@ interface FooterProps {
 
 export function Footer({ onNavigate }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const { isAuthenticated } = useAuth();
+
+  const handleBookCareClick = () => {
+    if (isAuthenticated) {
+      onNavigate('book-care');
+    } else {
+      onNavigate('auth');
+    }
+  };
+
+  const handleScrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
 
   const footerLinks = {
     about: [
-      { name: 'Our Story', action: () => {}, type: 'scroll', href: '#about' },
-      { name: 'Mission & Vision', action: () => {}, type: 'scroll', href: '#mission' },
+      { name: 'Our Story', action: () => handleScrollToSection('about'), type: 'scroll', href: '#about' },
+      { name: 'Mission & Vision', action: () => handleScrollToSection('mission'), type: 'scroll', href: '#mission' },
       { name: 'Blog', action: () => onNavigate('blog'), type: 'navigate' },
       { name: 'Knowledge Hub', action: () => onNavigate('knowledge'), type: 'navigate' },
-      { name: 'Careers', action: () => {}, type: 'scroll', href: '#careers' },
+      { name: 'Careers', action: () => handleScrollToSection('careers'), type: 'scroll', href: '#careers' },
     ],
     services: [
-      { name: 'Book Care Now', action: () => onNavigate('book-care'), type: 'navigate' },
+      { name: 'Book Care Now', action: handleBookCareClick, type: 'navigate' },
       { name: 'Join as Caregiver', action: () => onNavigate('caregiver-signup'), type: 'navigate' },
-      { name: 'Newborn Care', action: () => {}, type: 'scroll', href: '#services' },
-      { name: 'Maternal Support', action: () => {}, type: 'scroll', href: '#services' },
-      { name: 'AI Assistant', action: () => {}, type: 'scroll', href: '#ai-features' },
+      { name: 'Newborn Care', action: () => handleScrollToSection('services'), type: 'scroll', href: '#services' },
+      { name: 'Maternal Support', action: () => handleScrollToSection('services'), type: 'scroll', href: '#services' },
+      { name: 'AI Assistant', action: () => handleScrollToSection('ai-features'), type: 'scroll', href: '#ai-features' },
     ],
     support: [
       { name: 'FAQ', action: () => onNavigate('faq'), type: 'navigate' },
-      { name: 'Contact Us', action: () => {}, type: 'scroll', href: '#contact' },
+      { name: 'Contact Us', action: () => handleScrollToSection('contact'), type: 'scroll', href: '#contact' },
       { name: 'Sign In', action: () => onNavigate('auth'), type: 'navigate' },
       { name: 'Emergency Support', action: () => {}, type: 'external', href: 'tel:911' },
-      { name: 'Community Forum', action: () => {}, type: 'scroll', href: '#forum' },
+      { name: 'Community Forum', action: () => handleScrollToSection('forum'), type: 'scroll', href: '#forum' },
     ],
     legal: [
       { name: 'Legal Policies', action: () => onNavigate('legal'), type: 'navigate' },
       { name: 'Privacy Policy', action: () => onNavigate('legal'), type: 'navigate' },
       { name: 'Terms of Service', action: () => onNavigate('legal'), type: 'navigate' },
       { name: 'HIPAA Compliance', action: () => onNavigate('legal'), type: 'navigate' },
-      { name: 'Accessibility', action: () => {}, type: 'scroll', href: '#accessibility' },
+      { name: 'Accessibility', action: () => handleScrollToSection('accessibility'), type: 'scroll', href: '#accessibility' },
     ],
   };
 

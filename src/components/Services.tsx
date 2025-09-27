@@ -96,7 +96,15 @@ export function Services() {
         <div className="text-center mt-16">
           <div className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-full border border-primary/20">
             <span className="text-sm font-medium text-foreground">Need a custom care plan?</span>
-            <button className="text-primary hover:text-primary/80 font-semibold text-sm transition-colors duration-200">
+            <button 
+              onClick={() => {
+                const element = document.getElementById('contact');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="text-primary hover:text-primary/80 font-semibold text-sm transition-colors duration-200"
+            >
               Contact our specialists →
             </button>
           </div>

@@ -75,12 +75,12 @@ export function Blog({ showPreview = false, onNavigate }: BlogProps) {
     },
     {
       id: 3,
-      title: 'From Struggle to Success: Maya\'s Breastfeeding Journey',
+      title: 'From Struggle to Success: Nora\'s Breastfeeding Journey',
       excerpt: 'A real mother shares her challenges and triumphs in establishing a successful breastfeeding relationship.',
-      content: 'Maya thought breastfeeding would be natural and easy. Her reality was quite different...',
+      content: 'Nora thought breastfeeding would be natural and easy. Her reality was quite different...',
       category: 'stories',
       author: {
-        name: 'Maya Patel',
+        name: 'Nora Patel',
         avatar: 'indian mother',
         bio: 'First-time Mom & Software Engineer'
       },
