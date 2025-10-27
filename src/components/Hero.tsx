@@ -3,6 +3,7 @@ import { Button } from './ui/button';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { useScrollAnimation } from './hooks/useScrollAnimation';
 import { useAuth } from '../contexts/AuthContext';
+import heroImage from '../assets/images/hero-image.jpg';
 
 type AppView = 'home' | 'auth' | 'blog' | 'knowledge' | 'caregiver-signup' | 'book-care' | 'faq' | 'legal';
 
@@ -97,7 +98,7 @@ export function Hero({ onNavigate }: HeroProps) {
           <div ref={imageRef} className="relative opacity-0">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl transform rotate-2 hover:rotate-0 transition-transform duration-500">
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1716929806153-4e3f66242de0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb3RoZXIlMjBiYWJ5JTIwY2FyZSUyMGlsbHVzdHJhdGlvbnxlbnwxfHx8fDE3NTY2NDE5MTZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+                src={heroImage}
                 alt="Mother holding baby with care"
                 className="w-full h-[400px] sm:h-[500px] object-cover"
               />
