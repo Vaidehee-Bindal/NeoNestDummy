@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Badge } from './ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+// Removed unused Tabs imports
 import { useScrollAnimation, useStaggeredAnimation } from './hooks/useScrollAnimation';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
@@ -18,9 +18,7 @@ export function KnowledgeHub({ showPreview = false, onNavigate }: KnowledgeHubPr
   const [selectedCategory, setSelectedCategory] = useState('all');
   
   const { elementRef: heroRef } = useScrollAnimation();
-  const { containerRef: resourcesRef } = useStaggeredAnimation(6, 150);
-  const { containerRef: categoriesRef } = useStaggeredAnimation(4, 100);
-
+  // Define categories before using in animation hook
   const categories = [
     { id: 'all', name: 'All Resources', count: 156 },
     { id: 'pregnancy', name: 'Pregnancy', count: 42 },
@@ -29,6 +27,8 @@ export function KnowledgeHub({ showPreview = false, onNavigate }: KnowledgeHubPr
     { id: 'nutrition', name: 'Nutrition', count: 31 },
     { id: 'mental-health', name: 'Mental Health', count: 16 },
   ];
+
+  const { containerRef: categoriesRef, visibleItems: visibleCategoryItems } = useStaggeredAnimation(categories.length, 100);
 
   const featuredResources = [
     {
@@ -128,6 +128,9 @@ export function KnowledgeHub({ showPreview = false, onNavigate }: KnowledgeHubPr
     const matchesCategory = selectedCategory === 'all' || resource.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  // Animate resources based on current filtered count
+  const { containerRef: resourcesRef, visibleItems: visibleResourceItems } = useStaggeredAnimation(filteredResources.length, 150);
 
   if (showPreview) {
     return (
@@ -263,12 +266,12 @@ export function KnowledgeHub({ showPreview = false, onNavigate }: KnowledgeHubPr
       <section className="py-12 border-b border-border/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div ref={categoriesRef} className="flex flex-wrap justify-center gap-4">
-            {categories.map((category) => (
+            {categories.map((category, index) => (
               <Button
                 key={category.id}
                 variant={selectedCategory === category.id ? "default" : "outline"}
                 onClick={() => setSelectedCategory(category.id)}
-                className="opacity-0 transition-all duration-300"
+                className={`${!visibleCategoryItems[index] ? 'opacity-0' : ''} transition-all duration-300`}
               >
                 {category.name}
                 <Badge variant="secondary" className="ml-2">
@@ -284,10 +287,10 @@ export function KnowledgeHub({ showPreview = false, onNavigate }: KnowledgeHubPr
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div ref={resourcesRef} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredResources.map((resource) => {
+            {filteredResources.map((resource, index) => {
               const IconComponent = resource.icon;
               return (
-                <Card key={resource.id} className="opacity-0 group hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <Card key={resource.id} className={`${!visibleResourceItems[index] ? 'opacity-0' : ''} group hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
                   <div className="relative">
                     <div className="aspect-video bg-gradient-to-br from-primary/20 to-secondary/20 rounded-t-lg overflow-hidden">
                       <ImageWithFallback
