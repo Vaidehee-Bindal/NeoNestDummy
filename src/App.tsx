@@ -10,6 +10,7 @@ import { Plans } from './components/Plans';
 import { MissionVision } from './components/MissionVision';
 import { TrainingPortal } from './components/TrainingPortal';
 import { AIFeatures } from './components/AIFeatures';
+import { Card, CardContent } from './components/ui/card';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { FloatingChatbot } from './components/FloatingChatbot';
@@ -155,9 +156,25 @@ function App() {
               <MissionVision />
             </div>
 
-            {/* Training Portal Section with scroll animation */}
+            {/* Employment Info Card (replaces Training & Employment section) */}
             <div className="opacity-0 animate-fadeInUp" style={{ animationDelay: '1.4s' }}>
-              <TrainingPortal onNavigate={setCurrentView} />
+              <section className="py-12">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <Card className="border-2 border-primary/20 shadow-lg bg-gradient-to-b from-primary/5 to-secondary/5">
+                    <CardContent className="p-8 text-center">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-3">
+                        Empowering Women as Caregivers
+                      </h2>
+                      <p className="text-muted-foreground max-w-3xl mx-auto">
+                        Women in our community serve as professional caregivers through meaningful employment
+                        enabled by our partnerships with leading hospitals, NGOs, and organizations that provide
+                        maternal caregivers. This ecosystem ensures dignity, stability, and impact for caregivers
+                        while delivering trusted support to mothers and families.
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
+              </section>
             </div>
 
             {/* Blog Preview Section with scroll animation */}

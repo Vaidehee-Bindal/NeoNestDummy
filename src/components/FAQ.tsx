@@ -18,7 +18,6 @@ export function FAQ({ showPreview = false, onNavigate }: FAQProps) {
   const [openItems, setOpenItems] = useState<string[]>([]);
   
   const { elementRef: heroRef } = useScrollAnimation();
-  const { containerRef: faqRef } = useStaggeredAnimation(10, 100);
 
   const categories = [
     { id: 'all', name: 'All Questions', icon: HelpCircle, count: 24 },
@@ -210,6 +209,9 @@ export function FAQ({ showPreview = false, onNavigate }: FAQProps) {
 
   const popularFAQs = faqs.filter(faq => faq.popular);
 
+  // Stagger animation should reflect the current number of items being rendered
+  const { containerRef: faqRef, visibleItems } = useStaggeredAnimation(filteredFAQs.length, 100);
+
   const toggleItem = (id: string) => {
     setOpenItems(prev =>
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
@@ -386,8 +388,8 @@ export function FAQ({ showPreview = false, onNavigate }: FAQProps) {
           </div>
           
           <div ref={faqRef} className="space-y-4">
-            {filteredFAQs.map((faq) => (
-              <Card key={faq.id} className="opacity-0 group hover:shadow-lg transition-all duration-300">
+            {filteredFAQs.map((faq, index) => (
+              <Card key={faq.id} className={`${!visibleItems[index] ? 'opacity-0' : ''} group hover:shadow-lg transition-all duration-300`}>
                 <Collapsible
                   open={openItems.includes(faq.id)}
                   onOpenChange={() => toggleItem(faq.id)}

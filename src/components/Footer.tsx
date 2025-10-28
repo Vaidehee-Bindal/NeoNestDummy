@@ -1,4 +1,5 @@
-import { Heart, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import React from 'react';
+import { Heart, Mail, Phone, MapPin } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { useAuth } from '../contexts/AuthContext';
@@ -57,17 +58,12 @@ export function Footer({ onNavigate }: FooterProps) {
       { name: 'Legal Policies', action: () => onNavigate('legal'), type: 'navigate' },
       { name: 'Privacy Policy', action: () => onNavigate('legal'), type: 'navigate' },
       { name: 'Terms of Service', action: () => onNavigate('legal'), type: 'navigate' },
-      { name: 'HIPAA Compliance', action: () => onNavigate('legal'), type: 'navigate' },
+      { name: 'Data Protection', action: () => onNavigate('legal'), type: 'navigate' },
       { name: 'Accessibility', action: () => handleScrollToSection('accessibility'), type: 'scroll', href: '#accessibility' },
     ],
   };
 
-  const socialLinks = [
-    { icon: Facebook, href: '#facebook', label: 'Facebook' },
-    { icon: Twitter, href: '#twitter', label: 'Twitter' },
-    { icon: Instagram, href: '#instagram', label: 'Instagram' },
-    { icon: Linkedin, href: '#linkedin', label: 'LinkedIn' },
-  ];
+  // Social links removed per request
 
   return (
     <footer className="bg-gradient-to-b from-background to-muted/20 border-t border-border/50">
@@ -133,22 +129,7 @@ export function Footer({ onNavigate }: FooterProps) {
               </div>
             </div>
 
-            {/* Social Links */}
-            <div className="flex space-x-4 mt-6">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    className="w-10 h-10 bg-gradient-to-br from-primary/20 to-secondary/20 hover:from-primary/30 hover:to-secondary/30 rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110"
-                    aria-label={social.label}
-                  >
-                    <Icon className="w-4 h-4 text-primary" />
-                  </a>
-                );
-              })}
-            </div>
+            {/* Social Links removed */}
           </div>
 
           {/* About Links */}
@@ -269,13 +250,12 @@ export function Footer({ onNavigate }: FooterProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-sm text-muted-foreground">
-              © {currentYear} NeoNest. All rights reserved. Made with ❤️ for families everywhere.
+              © {currentYear} NeoNest. All rights reserved. Made with care for families everywhere.
             </div>
-            
+
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <span>🔒 HIPAA Compliant</span>
-              <span>✅ Background Checked</span>
-              <span>🏆 Award Winning</span>
+              <span>Privacy-Focused</span>
+              <span>Background Checked</span>
             </div>
           </div>
         </div>

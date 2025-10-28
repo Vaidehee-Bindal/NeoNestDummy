@@ -128,7 +128,7 @@ export function AIFeatures() {
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-primary rounded-full animate-pulse delay-100"></div>
-                  <span className="text-sm text-foreground">HIPAA Compliant</span>
+                  <span className="text-sm text-foreground">Privacy-Focused</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 bg-secondary rounded-full animate-pulse delay-200"></div>

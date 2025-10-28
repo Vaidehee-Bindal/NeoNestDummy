@@ -1,15 +1,11 @@
-import { Heart, Target, Users, Globe, Award, Lightbulb, Shield, Baby, Linkedin, Twitter, Mail } from 'lucide-react';
+import { Heart, Target, Users, Globe, Lightbulb, Shield, Baby } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Badge } from './ui/badge';
-import { Button } from './ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { useScrollAnimation, useStaggeredAnimation } from './hooks/useScrollAnimation';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 export function MissionVision() {
   const { elementRef: heroRef } = useScrollAnimation();
   const { containerRef: whyNeoNestRef } = useStaggeredAnimation(3, 200);
-  const { containerRef: founderRef } = useStaggeredAnimation(1, 300);
 
   const reasons = [
     {
@@ -35,25 +31,7 @@ export function MissionVision() {
     }
   ];
 
-  const founder = {
-    name: "Vaidehee Bindal",
-    title: "Founder & CEO",
-    bio: "A passionate B.Tech student driven by a personal mission to support mothers and newborns. The idea for the platform was inspired by observing her aunt's struggles with postpartum care and newborn support, and noticing the challenges faced by today's working mothers in nuclear families. Determined to make neonatal and postnatal support more accessible and practical, she envisioned a solution that blends traditional care practices with modern technology. Beyond supporting mothers, she is also committed to empowering local women by providing training, certification, and meaningful employment opportunities in the care ecosystem.",
-    experience: "B.Tech Student",
-    education: "B.Tech in Computer Science",
-    achievements: [
-      "Personal experience with family postpartum challenges",
-      "Visionary approach to traditional care + technology",
-      "Committed to women's empowerment and employment",
-      "Passionate about accessible maternal care"
-    ],
-    vision: "To revolutionize maternal care by creating a trusted ecosystem where every mother receives expert support and every woman caregiver achieves economic independence through meaningful work.",
-    social: {
-      linkedin: "#",
-      twitter: "#",
-      email: "vaidehee@neonest.com"
-    }
-  };
+  
 
 
   return (
@@ -120,66 +98,7 @@ export function MissionVision() {
           </div>
         </div>
 
-        {/* Founder Section */}
-        <div className="mb-20">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-bold text-foreground mb-4">Meet Our Founder</h3>
-            <p className="text-lg text-muted-foreground">
-              The visionary behind NeoNest's mission to transform maternal care
-            </p>
-          </div>
-          
-          <div ref={founderRef} className="max-w-4xl mx-auto">
-            <Card className="opacity-0 overflow-hidden shadow-2xl border-0">
-              <CardContent className="p-8">
-                    <div className="flex items-start justify-between mb-6">
-                      <div>
-                        <h4 className="text-2xl font-bold text-foreground mb-2">{founder.name}</h4>
-                        <p className="text-lg text-primary font-medium mb-1">{founder.title}</p>
-                        <p className="text-sm text-muted-foreground">{founder.experience}</p>
-                        <p className="text-sm text-muted-foreground">{founder.education}</p>
-                      </div>
-                      <div className="flex gap-2">
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={founder.social.linkedin} target="_blank" rel="noopener noreferrer">
-                            <Linkedin className="w-4 h-4" />
-                          </a>
-                        </Button>
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={founder.social.twitter} target="_blank" rel="noopener noreferrer">
-                            <Twitter className="w-4 h-4" />
-                          </a>
-                        </Button>
-                        <Button variant="outline" size="sm" asChild>
-                          <a href={`mailto:${founder.social.email}`}>
-                            <Mail className="w-4 h-4" />
-                          </a>
-                        </Button>
-                      </div>
-                    </div>
-                    
-                    <p className="text-muted-foreground leading-relaxed mb-6">{founder.bio}</p>
-                    
-                    <div className="mb-6">
-                      <h5 className="font-semibold text-foreground mb-3">Key Achievements</h5>
-                      <div className="grid grid-cols-2 gap-2">
-                        {founder.achievements.map((achievement, index) => (
-                          <Badge key={index} variant="outline" className="justify-start p-2">
-                            <Award className="w-3 h-3 mr-2 text-primary" />
-                            {achievement}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    
-                <div className="border-t pt-6">
-                  <h5 className="font-semibold text-foreground mb-3">Vision Statement</h5>
-                  <p className="text-muted-foreground italic leading-relaxed">"{founder.vision}"</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+        
 
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">

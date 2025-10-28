@@ -457,7 +457,7 @@ export function Auth({ onNavigate }: AuthProps) {
             <div className="mt-6 text-center">
               <Badge variant="outline" className="text-xs">
                 <Shield className="w-3 h-3 mr-1" />
-                Secure & HIPAA Compliant
+                Secure & Privacy-Focused
               </Badge>
             </div>
           </div>
